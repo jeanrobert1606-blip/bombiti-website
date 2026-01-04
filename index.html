@@ -6518,5 +6518,34 @@ a {
             window.scrollTo(0, 0);
           });
         </script>
+        <script>
+  (function () {
+    function removeEmergentBadge() {
+      // Remove any obvious Emergent links/badges
+      const candidates = Array.from(document.querySelectorAll('a, button, div, span'));
+      for (const el of candidates) {
+        const txt = (el.innerText || "").trim().toLowerCase();
+        const href = (el.getAttribute && el.getAttribute('href') || "").toLowerCase();
 
+        if (
+          txt.includes("made with emergent") ||
+          txt.includes("made by emergent") ||
+          href.includes("emergent")
+        ) {
+          el.remove();
+        }
+      }
+    }
+
+    // Run now + after load
+    removeEmergentBadge();
+    window.addEventListener("load", removeEmergentBadge);
+
+    // Keep removing if it gets injected again
+    const obs = new MutationObserver(removeEmergentBadge);
+    obs.observe(document.documentElement, { childList: true, subtree: true });
+  })();
+</script>
+
+            
 </body></html>
